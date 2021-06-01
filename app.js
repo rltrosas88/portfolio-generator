@@ -98,12 +98,14 @@
 // console.log(four); // prints 'four: inside the block'
 
 // const profileDataArgs = process.argv.slice(2, process.argv.length);
-// const printProfileData = profileDataArr => {
-    // This...
-    // for (let i = 0; i < profileDataArr.length; i += 1) {
-    //     console.log(profileDataArr[i]);
-    // }
 
+const profileDataArgs = process.argv.slice(2);
+ const printProfileData = profileDataArr => {
+    // This...
+    for (let i = 0; i < profileDataArr.length; i += 1) {
+        console.log(profileDataArr[i]);
+    }
+    console.log('================');
     // Is the same as this...
     //.forEach method accepts a function as an argument and executes that function on each element of the array,
         // using the value of the element at that iteration as its argument.
@@ -111,9 +113,8 @@
     //     console.log(profileItem)
     // });
 
-//     profileDataArr.forEach(profileItem => console.log(profileItem));
-
-//     console.log('================');
-// };
-// printProfileData(profileDataArgs);
+    // Is the same as this...
+    profileDataArr.forEach(profileItem => console.log(profileItem));
+ };
+ printProfileData(profileDataArgs);
 
