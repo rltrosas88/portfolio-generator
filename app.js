@@ -99,21 +99,23 @@
 
 // const profileDataArgs = process.argv.slice(2, process.argv.length);
 
-const profileDataArgs = process.argv.slice(2);
- const printProfileData = profileDataArr => {
-    // This...
-    for (let i = 0; i < profileDataArr.length; i += 1) {
-        console.log(profileDataArr[i]);
-    }
-    console.log('================');
-    // Is the same as this...
-    //.forEach method accepts a function as an argument and executes that function on each element of the array,
-        // using the value of the element at that iteration as its argument.
-    // profileDataArr.forEach((profileItem) => {
-    //     console.log(profileItem)
-    // });
+//  const profileDataArgs = process.argv.slice(2);
+//  const printProfileData = profileDataArr => {
+//     // This...
+//     for (let i = 0; i < profileDataArr.length; i += 1) {
+//         console.log(profileDataArr[i]);
+//     }
+//     console.log('================');
+//     // Is the same as this...
+//     //.forEach method accepts a function as an argument and executes that function on each element of the array,
+//         // using the value of the element at that iteration as its argument.
+//     // profileDataArr.forEach((profileItem) => {
+//     //     console.log(profileItem)
+//     // });
 
-    // Is the same as this...
-    profileDataArr.forEach(profileItem => console.log(profileItem));
- };
- printProfileData(profileDataArgs);
+//     // Is the same as this...
+//     profileDataArr.forEach(profileItem => console.log(profileItem));
+//  };
+//  printProfileData(profileDataArgs);
+
+const profileDataArgs = process.argv.slice(2);
