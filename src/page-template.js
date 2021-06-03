@@ -117,7 +117,7 @@
 const profileDataArgs = process.argv.slice(2);
 
 // const name = profileDataArgs[0];
-// const github = profileDataArgs [1];
+// const github = profileDataArgs[1];
 //Also written like...
     //The destructuring assignment syntax is a JavaScript expression that makes it possible to unpack values from array, or properties from objects, in to distinct variables
     //The destructuring assignment uses syntax on the left-hand side of the assignment to define what values to unpack from the sourced variable
