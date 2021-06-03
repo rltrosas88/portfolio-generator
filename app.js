@@ -11,6 +11,15 @@ const generatePage = require('./src/page-template.js');
 // console.log(message);
 // console.log(sum);
 
+const profileDataArgs = process.argv.slice(2);
+
+console.log(profileDataArgs);
+
+const [name, github] = profileDataArgs;
+
+console.log(name, github);
+
+const pageHTML = generatePage(name, github);
 
 // fs.writeFile(file, data[,options], callback)
     //fs.writeFile has 3 arguements
@@ -19,10 +28,10 @@ const generatePage = require('./src/page-template.js');
         //3) the callback function that will handle any errors as well as the success message
     //When an arrow function has one argument, parentheses are optional
     //When an arrow function has no arguments -or more than one- parentheses are necessary
-fs.writeFile('./index.html', generatePage(name, github), err => {
+fs.writeFile('./index.html', pageHTML, err => {
     //a conditional statement that checks for the err being returned by the callback function
     //if err exists, an error message is displayed
-    if (err) throw new Error(err);
+    if (err) throw new err;
 
     console.log('Portfolio complete! Check out index.html to see the output!');
 });
