@@ -39,12 +39,101 @@ const inquirer = require('inquirer');
 //     console.log('Portfolio complete! Check out index.html to see the output!');
 // });
 
-inquirer
-    .prompt([
+
+//a function returns a running of inquire.prompt(), thus returning what it returns, which is a Promise
+//just like fetch(), the Promise will resolve with a .then() method
+const promptUser = () => {
+    return inquirer.prompt([
         {
             type: 'input',
             name: 'name',
             message: 'What is your name?'
+        },
+        {    
+            type: 'input',
+            name: 'github',
+            message: 'Enter your GitHub Username'
+        },
+        {
+            type: 'input',
+            name: 'about',
+            message: 'Provide some information about yourself:'
+        }
+    ]);      
+};
+
+//promptUser().then(answers => console.log(answers));
+
+const promptProject = portfolioData => {
+    console.log(`
+    =================
+    Add a New Project
+    =================
+    `);
+    //if there's no 'projects' array property, create one
+    if (!portfolioData.projects) {
+        portfolioData.projects = [];
+    } 
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: 'What is the name of your project?'
+        },
+        {
+            type: 'input',
+            name: 'description',
+            message: 'Provide a description of the project (Required)'
+        },
+        {
+            type: 'checkbox',
+            name: 'languages',
+            message: 'What did you build this project with? (check all that apply)',
+            choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
+        },
+        {
+            type: 'input',
+            name: 'link',
+            message: 'Enter the GitHub link to your project. (Required)'
+        },
+        {
+            //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
+            type: 'confirm',
+            name: 'feature',
+            message: 'Would you like to feature this project?',
+            //We set the default answer in the default property in case this question gets skipped
+            default: false
+        },
+        {
+            //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
+            type: 'confirm',
+            name: 'confirmAddProject',
+            message: 'Would you like to enter another project?',
+            //We set the default answer in the default property in case this question gets skipped
+            default: false
         }
     ])
-    .then(answers => console.log(answers));
+    .then(projectData => {
+        portfolioData.projects.push(projectData);
+        //Evaluating the user response to whether they wish to add more projects
+        //This response was captured in the answer object, projectData, in the property confirmAddProject
+        //If the user wishes to add more projects, then this condistion will evaluate to true and call the promptProject(portfolioData) function
+        if (projectData.confirmAddProject) {
+            return promptProject(portfolioData);
+        //if the user decides not to add more projects, then the condition will evaluate to false and trigger the following statement
+        //we have to return the portfolioData in the else statment explicitly so that the object is returned this is so we can
+            //retrieve the user's answer and build the HTML template
+        } else {
+            return portfolioData;
+        }
+    });
+};
+
+promptUser()
+    // .then(answers => console.log(answers))
+    // .then(promptProject)
+    // .then(projectAnswers => console.log(projectAnswers));
+    .then(promptProject)
+    .then(portfolioData => {
+        console.log(portfolioData);
+    });
