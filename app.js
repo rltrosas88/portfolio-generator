@@ -215,7 +215,7 @@ const mockData = {
     ]
   };
 
-const pageHTML = generatePage(mockData);
+const pageHTML = generatePage(mockData); 
 promptUser()
     // .then(answers => console.log(answers))
     // .then(promptProject)
@@ -223,7 +223,8 @@ promptUser()
     .then(promptProject)
     .then(portfolioData => {
         //console.log(portfolioData);
-        const pageHTML = generatePage(portfolioData);
+        //const pageHTML = generatePage(portfolioData);
+            
         // fs.writeFile(file, data[,options], callback)
             //fs.writeFile has 3 arguements
                 //1) the file name that will be created, or the output file
