@@ -67,13 +67,7 @@ const promptUser = () => {
             name: 'about',
             message: 'Provide some information about yourself:',
             //the when function allows us to write conditional code based on the answers the user has supplied so far
-            when: ({confirmAbout}) => {
-                if (confirmAbout) {
-                    return true;
-                } else {
-                    return false;
-                }
-            }
+            when: ({confirmAbout}) => confirmAbout
         }
     ]);      
 };
@@ -82,140 +76,94 @@ const promptUser = () => {
 
 const promptProject = portfolioData => {
     console.log(`
-    =================
-    Add a New Project
-    =================
-    `);
+=================
+Add a New Project
+=================
+`);
     //if there's no 'projects' array property, create one
     if (!portfolioData.projects) {
         portfolioData.projects = [];
     } 
-    return inquirer.prompt([
-        {
-            type: 'input',
-            name: 'name',
-            message: 'What is the name of your project? (Required)',
-            validate: nameInput => {
-                if (nameInput) {
-                    return true;
-                } else {
-                    console.log('Please enter the name of your project!');
-                    return false;
+    return inquirer
+        .prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What is the name of your project? (Required)',
+                validate: nameInput => {
+                    if (nameInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter the name of your project!');
+                        return false;
+                    }
                 }
-            }
-        },
-        {
-            type: 'input',
-            name: 'description',
-            message: 'Provide a description of the project (Required)',
-            validate: descriptionInput => {
-                if (descriptionInput) {
-                    return true;
-                } else {
-                    console.log('Please enter a description of the project!');
-                    return false;
+            },
+            {
+                type: 'input',
+                name: 'description',
+                message: 'Provide a description of the project (Required)',
+                validate: descriptionInput => {
+                    if (descriptionInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter a description of the project!');
+                        return false;
+                    }
                 }
-            }
-        },
-        {
-            type: 'checkbox',
-            name: 'languages',
-            message: 'What did you build this project with? (check all that apply)',
-            choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
-        },
-        {
-            type: 'input',
-            name: 'link',
-            message: 'Enter the GitHub link to your project. (Required)',
-            validate: linkInput => {
-                if (linkInput) {
-                    return true;
-                } else {
-                    console.log('Please enter your GitHub link to your project!');
-                    return false;
+            },
+            {
+                type: 'checkbox',
+                name: 'languages',
+                message: 'What did you build this project with? (check all that apply)',
+                choices: ['JavaScript', 'HTML', 'CSS', 'ES6', 'jQuery', 'Bootstrap', 'Node']
+            },
+            {
+                type: 'input',
+                name: 'link',
+                message: 'Enter the GitHub link to your project. (Required)',
+                validate: linkInput => {
+                    if (linkInput) {
+                        return true;
+                    } else {
+                        console.log('Please enter your GitHub link to your project!');
+                        return false;
+                    }
                 }
+            },
+            {
+                //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
+                type: 'confirm',
+                name: 'feature',
+                message: 'Would you like to feature this project?',
+                //We set the default answer in the default property in case this question gets skipped
+                default: false
+            },
+            {
+                //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
+                type: 'confirm',
+                name: 'confirmAddProject',
+                message: 'Would you like to enter another project?',
+                //We set the default answer in the default property in case this question gets skipped
+                default: false
             }
-        },
-        {
-            //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
-            type: 'confirm',
-            name: 'feature',
-            message: 'Would you like to feature this project?',
-            //We set the default answer in the default property in case this question gets skipped
-            default: false
-        },
-        {
-            //the confirm type question is a Boolean that can receive a yes or no (true or false) answer
-            type: 'confirm',
-            name: 'confirmAddProject',
-            message: 'Would you like to enter another project?',
-            //We set the default answer in the default property in case this question gets skipped
-            default: false
-        }
-    ])
-    .then(projectData => {
-        portfolioData.projects.push(projectData);
-        //Evaluating the user response to whether they wish to add more projects
-        //This response was captured in the answer object, projectData, in the property confirmAddProject
-        //If the user wishes to add more projects, then this condistion will evaluate to true and call the promptProject(portfolioData) function
-        if (projectData.confirmAddProject) {
-            return promptProject(portfolioData);
-        //if the user decides not to add more projects, then the condition will evaluate to false and trigger the following statement
-        //we have to return the portfolioData in the else statment explicitly so that the object is returned this is so we can
-            //retrieve the user's answer and build the HTML template
-        } else {
-            return portfolioData;
-        }
-    });
+        ])
+        .then(projectData => {
+            portfolioData.projects.push(projectData);
+            //Evaluating the user response to whether they wish to add more projects
+            //This response was captured in the answer object, projectData, in the property confirmAddProject
+            //If the user wishes to add more projects, then this condistion will evaluate to true and call the promptProject(portfolioData) function
+            if (projectData.confirmAddProject) {
+                return promptProject(portfolioData);
+            //if the user decides not to add more projects, then the condition will evaluate to false and trigger the following statement
+            //we have to return the portfolioData in the else statment explicitly so that the object is returned this is so we can
+                //retrieve the user's answer and build the HTML template
+            } else {
+                return portfolioData;
+            }
+        });
 };
 
-const mockData = {
-    name: 'Lernantino',
-    github: 'lernantino',
-    confirmAbout: true,
-    about:
-      'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et.',
-    projects: [
-      {
-        name: 'Run Buddy',
-        description:
-          'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et. Nam fringilla elit dapibus pellentesque cursus.',
-        languages: ['HTML', 'CSS'],
-        link: 'https://github.com/lernantino/run-buddy',
-        feature: true,
-        confirmAddProject: true
-      },
-      {
-        name: 'Taskinator',
-        description:
-          'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et. Nam fringilla elit dapibus pellentesque cursus.',
-        languages: ['JavaScript', 'HTML', 'CSS'],
-        link: 'https://github.com/lernantino/taskinator',
-        feature: true,
-        confirmAddProject: true
-      },
-      {
-        name: 'Taskmaster Pro',
-        description:
-          'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque. Nulla eget fringilla nulla. Integer gravida magna mi, id efficitur metus tempus et. Nam fringilla elit dapibus pellentesque cursus.',
-        languages: ['JavaScript', 'jQuery', 'CSS', 'HTML', 'Bootstrap'],
-        link: 'https://github.com/lernantino/taskmaster-pro',
-        feature: false,
-        confirmAddProject: true
-      },
-      {
-        name: 'Robot Gladiators',
-        description:
-          'Duis consectetur nunc nunc. Morbi finibus non sapien nec pharetra. Fusce nec dignissim orci, ac interdum ipsum. Morbi mattis justo sed commodo pellentesque.',
-        languages: ['JavaScript'],
-        link: 'https://github.com/lernantino/robot-gladiators',
-        feature: false,
-        confirmAddProject: false
-      }
-    ]
-  };
-
-const pageHTML = generatePage(mockData); 
 promptUser()
     // .then(answers => console.log(answers))
     // .then(promptProject)
@@ -223,7 +171,7 @@ promptUser()
     .then(promptProject)
     .then(portfolioData => {
         //console.log(portfolioData);
-        //const pageHTML = generatePage(portfolioData);
+        const pageHTML = generatePage(portfolioData);
             
         // fs.writeFile(file, data[,options], callback)
             //fs.writeFile has 3 arguements
