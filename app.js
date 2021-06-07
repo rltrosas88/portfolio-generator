@@ -1,5 +1,6 @@
+const { writeFile, copyFile } = require('./utils/generate-site.js');
 // //The require statement is a built-in function that's globally available in Node.js that allows the app.js file to access the fs module's functions through the fs assignment
-const fs = require('fs');
+//const fs = require('fs');
 const inquirer = require('inquirer');
 const { copyFile } = require('node:fs');
 //console.log(inquirer);
@@ -177,7 +178,7 @@ promptUser()
         return generatePage(portfolioData);
     })   
     .then (pageHTML => {
-        returnwriteFile(pageHTML);
+        return writeFile(pageHTML);
     })  
     .then(writeFileResponse => {
         console.log(writeFileResponse);
