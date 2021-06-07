@@ -1,6 +1,7 @@
 // //The require statement is a built-in function that's globally available in Node.js that allows the app.js file to access the fs module's functions through the fs assignment
 const fs = require('fs');
 const inquirer = require('inquirer');
+const { copyFile } = require('node:fs');
 //console.log(inquirer);
 const generatePage = require('./src/page-template.js');
 
@@ -164,6 +165,7 @@ Add a New Project
         });
 };
 
+//Nested callback functions are known as the Pyramid of Doom or Callback Hell.
 promptUser()
     // .then(answers => console.log(answers))
     // .then(promptProject)
@@ -171,8 +173,22 @@ promptUser()
     .then(promptProject)
     .then(portfolioData => {
         //console.log(portfolioData);
-        const pageHTML = generatePage(portfolioData);
-            
+        //const pageHTML = generatePage(portfolioData);
+        return generatePage(portfolioData);
+    })   
+    .then (pageHTML => {
+        returnwriteFile(pageHTML);
+    })  
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then(copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch(err => {
+        console.log(err);
+    });
         // fs.writeFile(file, data[,options], callback)
             //fs.writeFile has 3 arguements
                 //1) the file name that will be created, or the output file
@@ -180,11 +196,23 @@ promptUser()
                 //3) the callback function that will handle any errors as well as the success message
             //When an arrow function has one argument, parentheses are optional
             //When an arrow function has no arguments -or more than one- parentheses are necessary
-        fs.writeFile('./index.html', pageHTML, err => {
-            //a conditional statement that checks for the err being returned by the callback function
-            //if err exists, an error message is displayed
-            if (err) throw new Error(err);
+        //fs.writeFile('./index.html', pageHTML, err => {
+        //change the path
+        // fs.writeFile('./dist/index.html', pageHTML, err => {
+        //     //a conditional statement that checks for the err being returned by the callback function
+        //     //if err exists, an error message is displayed
+        //     if (err) {
+        //         consol.log(err);
+        //         return;
+        //     }
+        //     console.log('Page created! Check out index.html in this directory to see it!');
 
-            console.log('Page created! Check out index.html in this directory to see it!');
-        });
-    });
+        //     fs.copyFile('./src/style.css', './dist/style.css', err => {
+        //         if (err) {
+        //             console.log(err);
+        //             return;
+        //         }
+        //         console.log('Style sheet coppied successfully!');
+        //     });
+        // });
+    //});
